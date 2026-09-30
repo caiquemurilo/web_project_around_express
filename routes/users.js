@@ -17,5 +17,21 @@ router.get('/', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const data = await fsPromises.readFile(path.join(__dirname, '..', 'data', 'users.json'), { encoding: 'utf-8' });
+    const usersData = JSON.parse(data);
+    const user = usersData.find((u) => u._id === id);
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).send('User not found');
+    }
+  } catch (err) {
+    console.error('Error reading users.json:', err);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 export default router;
