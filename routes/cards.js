@@ -7,14 +7,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const router = Router();
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   try {
     const data = await fsPromises.readFile(path.join(__dirname, '..', 'data', 'cards.json'), { encoding: 'utf-8' });
     const cards = JSON.parse(data);
     res.json(cards);
-  } catch (error) {
-    console.error('Error reading cards data:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+  } catch (err) {
+    next(err);
   }
 });
 

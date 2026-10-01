@@ -7,17 +7,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const router = Router();
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   try {
     const data = await fsPromises.readFile(path.join(__dirname, '..', 'data', 'users.json'), { encoding: 'utf-8' });
     const usersData = JSON.parse(data);
     res.json(usersData);
   } catch (err) {
-    console.error('Error reading users.json:', err);
-    res.status(500).send('Internal Server Error');
+    next(err);
   }
 });
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
   const { id } = req.params;
   try {
     const data = await fsPromises.readFile(path.join(__dirname, '..', 'data', 'users.json'), { encoding: 'utf-8' });
@@ -29,8 +28,7 @@ router.get('/:id', async (req, res) => {
       res.status(404).send('User not found');
     }
   } catch (err) {
-    console.error('Error reading users.json:', err);
-    res.status(500).send('Internal Server Error');
+    next(err);
   }
 });
 
