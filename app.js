@@ -1,9 +1,12 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import usersRouter from './routes/users.js';
 import cardsRouter from './routes/cards.js';
 
 const app = express();
 const { PORT = 3000 } = process.env;
+
+mongoose.connect('mongodb://localhost:27017/aroundb');
 
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
