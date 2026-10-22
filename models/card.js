@@ -31,5 +31,5 @@ createdAt: {
   default: Date.now,}
 });
 
-const Card = mongoose.model('Card', cardSchema);
+const Card = mongoose.model('card', cardSchema);
 export default Card;

@@ -1,4 +1,4 @@
-import Card from '../models/cards.js';
+import Card from '../models/card.js';
 
 export const getCards = async (req, res, next) => {
   try {
