@@ -9,25 +9,37 @@ export const getCards = async (req, res, next) => {
   }
 };
 
-export const createCard = async (req, res) => {
+export const createCard = async (req, res, next) => {
   const {name, link} = req.body;
   const owner = req.user._id;
   try {
     const card = await Card.create({name, link, owner});
     res.status(201).json(card);
+
   } catch (err) {
-    res.status(400).send({ message: 'Invalid data provided' });
+    if (err.name === 'ValidationError') {
+      return res.status(400).send({ message: 'Invalid data provided' });
+    }
+    next(err);
   }
 };
 
-export const deleteCard = async (req, res) => {
+export const deleteCard = async (req, res, next) => {
   try {
-    const card = await Card.findByIdAndDelete(req.params.cardId);
-    if (!card) {
-      return res.status(404).send({ message: 'Card not found' });
-    }
+    const card = await Card.findByIdAndDelete(req.params.cardId)
+    .orFail(() => {
+        const error = new Error('Card not found');
+        error.statusCode = 404;
+        throw error;
+      });
     res.status(200).send({ message: 'Card deleted successfully' });
   } catch (err) {
-    res.status(400).send({ message: 'Invalid data provided' });
+        if (err.statusCode === 404) {
+      return res.status(404).send({ message: err.message });
+    }
+    if (err.name === 'CastError') {
+      return res.status(400).send({ message: 'Invalid card ID format' });
+    }
+    next(err);
   }
 };
