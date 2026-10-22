@@ -2,34 +2,14 @@ import path from 'node:path';
 import fsPromises from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { Router } from 'express';
+import { getUsers, getUserById, createUser } from '../controllers/users.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const router = Router();
 
-router.get('/', async (req, res, next) => {
-  try {
-    const data = await fsPromises.readFile(path.join(__dirname, '..', 'data', 'users.json'), { encoding: 'utf-8' });
-    const usersData = JSON.parse(data);
-    res.json(usersData);
-  } catch (err) {
-    next(err);
-  }
-});
-router.get('/:id', async (req, res, next) => {
-  const { id } = req.params;
-  try {
-    const data = await fsPromises.readFile(path.join(__dirname, '..', 'data', 'users.json'), { encoding: 'utf-8' });
-    const usersData = JSON.parse(data);
-    const user = usersData.find((u) => u._id === id);
-    if (user) {
-      res.json(user);
-    } else {
-      res.status(404).send('User not found');
-    }
-  } catch (err) {
-    next(err);
-  }
-});
+router.get('/', getUsers);
+router.get('/:id', getUserById);
+router.post('/', createUser);
 
 export default router;
