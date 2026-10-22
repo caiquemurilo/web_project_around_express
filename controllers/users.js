@@ -2,8 +2,8 @@ import User from '../models/users.js';
 
 export const getUsers = async (req, res, next) => {
   try {
-    const usersData = await User.find({});
-    res.json(usersData);
+    const users = await User.find({});
+    res.json(users);
   } catch (err) {
     next(err);
   }
