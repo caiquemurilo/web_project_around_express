@@ -10,6 +10,14 @@ mongoose.connect('mongodb://localhost:27017/aroundb');
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+  req.user = {
+    _id: '6ad95f44de99245f384689ec'
+  };
+
+  next();
+});
+
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
 
