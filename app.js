@@ -6,7 +6,12 @@ import cardsRouter from './routes/cards.js';
 const app = express();
 const { PORT = 3000 } = process.env;
 
-mongoose.connect('mongodb://localhost:27017/aroundb');
+try {
+  await mongoose.connect('mongodb://localhost:27017/aroundb');
+  console.log('Connected to MongoDB');
+} catch (err) {
+  console.error('Error connecting to MongoDB:', err);
+}
 
 app.use(express.json());
 
