@@ -17,9 +17,7 @@ export const createCard = async (req, res, next) => {
     res.status(201).json(card);
 
   } catch (err) {
-    if (err.name === 'ValidationError') {
-      return res.status(400).send({ message: 'Invalid data provided' });
-    }
+
     next(err);
   }
 };
@@ -34,12 +32,6 @@ export const deleteCard = async (req, res, next) => {
       });
     res.status(200).send({ message: 'Card deleted successfully' });
   } catch (err) {
-        if (err.statusCode === 404) {
-      return res.status(404).send({ message: err.message });
-    }
-    if (err.name === 'CastError') {
-      return res.status(400).send({ message: 'Invalid card ID format' });
-    }
     next(err);
   }
 };
@@ -59,13 +51,6 @@ const card = await Card.findByIdAndUpdate(
 })
 res.status(200).json(card)
 } catch (err) {
-    if (err.statusCode === 404) {
-      return res.status(404).send({ message: err.message });
-    }
-    if (err.name === 'CastError') {
-      return res.status(400).send({ message: 'Invalid card ID format' });
-    }
-
   next(err);
 }
 }
@@ -85,13 +70,6 @@ const card = await Card.findByIdAndUpdate(
 })
 res.status(200).json(card)
 } catch (err) {
-    if (err.statusCode === 404) {
-      return res.status(404).send({ message: err.message });
-    }
-    if (err.name === 'CastError') {
-      return res.status(400).send({ message: 'Invalid card ID format' });
-    }
-
   next(err);
 }
 }

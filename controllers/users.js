@@ -21,12 +21,6 @@ export const getUserById = async (req, res, next) => {
       });
     res.status(200).json(user);
   } catch (err) {
-    if (err.statusCode === 404) {
-      return res.status(404).send({ message: err.message });
-    }
-    if (err.name === 'CastError') {
-      return res.status(400).send({ message: 'Invalid user ID format' });
-    }
     next(err);
   }
 };
@@ -37,9 +31,6 @@ export const createUser = async (req, res, next) => {
     const user = await User.create({ name, about, avatar });
     res.status(201).json(user);
   } catch (err) {
-    if (err.name === 'ValidationError') {
-      return res.status(400).send({ message: 'Invalid data provided' });
-    }
     next(err);
   }
 };
@@ -59,15 +50,6 @@ try {
       });
       res.status(200).json(user);
 } catch(err) {
-    if (err.statusCode === 404) {
-      return res.status(404).send({ message: err.message });
-    }
-    if (err.name === 'ValidationError') {
-      return res.status(400).send({ message: 'Invalid data provided' });
-    }
-    if (err.name === 'CastError') {
-      return res.status(400).send({ message: 'Invalid user ID format' });
-    }
     next(err);
 }
 }
@@ -87,15 +69,6 @@ try {
       });
       res.status(200).json(user);
 } catch(err) {
-    if (err.statusCode === 404) {
-      return res.status(404).send({ message: err.message });
-    }
-    if (err.name === 'ValidationError') {
-      return res.status(400).send({ message: 'Invalid data provided' });
-    }
-    if (err.name === 'CastError') {
-      return res.status(400).send({ message: 'Invalid user ID format' });
-    }
     next(err);
 }
 }
